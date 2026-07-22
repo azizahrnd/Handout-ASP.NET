@@ -67,6 +67,8 @@ namespace ORM_EFCore_.Controllers
 			try
 			{
 				var Categories = _context.Categories.Find(category.CategoryID);
+				if (Categories == null)
+					return NotFound("Category dengan ID " + category.CategoryID + " tidak ditemukan");
 
 				Categories.Description = category.Description;
 				int result = _context.SaveChanges();
@@ -84,18 +86,18 @@ namespace ORM_EFCore_.Controllers
 			try
 			{
 				var Categories = _context.Categories.Find(id);
+				if (Categories == null)
+					return NotFound("Category dengan ID " + id + " tidak ditemukan");
+
 				_context.Categories.Remove(Categories);
 				int result = _context.SaveChanges();
 
 				return Ok(result);
-
-
 			}
 			catch (Exception ex)
 			{
 				return BadRequest(ex.Message);
 			}
 		}
-
 	}
 }

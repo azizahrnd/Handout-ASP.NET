@@ -5,7 +5,7 @@ namespace ContohAPI.Controllers
 {
     public class CategoriesController : Controller
     {
-        private static string connectionString = "Server=localhost;Database=Northwind;Trusted_Connection=true;";
+        private static string connectionString = "Server=localhost,1433;Database=Northwind;User Id=sa;Password=Password123!;TrustServerCertificate=true;";
 
         [HttpGet("MendapatkanData")]
         public IActionResult GetData()

@@ -8,7 +8,7 @@ namespace CRUD.ADO.NET.Controllers
 	[Route("[controller]")]
 	public class CategoriesController : ControllerBase
 	{
-		private static string connectionString = "koneksi_database";
+		private static string connectionString = "Server=localhost,1433;Database=Northwind;User Id=sa;Password=Password123!;TrustServerCertificate=true;";
 
 		[HttpPost("Insert")]
 		public IActionResult Insert([FromBody] Categories categories)
@@ -18,29 +18,51 @@ namespace CRUD.ADO.NET.Controllers
 				using (SqlConnection connection = new SqlConnection(connectionString))
 				{
 					connection.Open();
-					string query = @$"
+					string query;
+					if (categories.CategoryID == null)
+					{
+						query = @"
 									INSERT INTO Categories
 									(
-										 CategoryID
+										CategoryName
+										,Description
+										,Picture
+									) 
+									values 
+									(
+										@CategoryName
+										,@Description
+										,@Picture
+									)
+								";
+					}
+					else
+					{
+						query = @"
+									INSERT INTO Categories
+									(
+										CategoryID
 										,CategoryName
 										,Description
 										,Picture
 									) 
 									values 
 									(
-										 @CategoryID
+										@CategoryID
 										,@CategoryName
 										,@Description
 										,@Picture
 									)
 								";
+					}
 					using (SqlCommand command = new SqlCommand
 						(query, connection))
 					{
-						command.Parameters.AddWithValue("@CategoryID", categories.CategoryID);
-						command.Parameters.AddWithValue("@CategoryName", categories.CategoryName);
-						command.Parameters.AddWithValue("@Description", categories.Description);
-						command.Parameters.AddWithValue("@Picture", categories.Picture);
+						command.Parameters.AddWithValue("@CategoryID", (object?)categories.CategoryID ?? DBNull.Value);
+						command.Parameters.AddWithValue("@CategoryName", (object?)categories.CategoryName ?? DBNull.Value);
+						command.Parameters.AddWithValue("@Description", (object?)categories.Description ?? DBNull.Value);
+						var pictureParam = command.Parameters.Add("@Picture", System.Data.SqlDbType.VarBinary, -1);
+						pictureParam.Value = (object?)categories.Picture ?? DBNull.Value;
 						command.ExecuteNonQuery();
 
 					}

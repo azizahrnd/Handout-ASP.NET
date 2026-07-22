@@ -1,0 +1,6 @@
+@LatihanSaya_HostAddress = http://localhost:5278
+
+GET {{LatihanSaya_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
