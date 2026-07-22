@@ -8,14 +8,23 @@ namespace CRUD.ADO.NET.Controllers
 	[Route("[controller]")]
 	public class CategoriesController : ControllerBase
 	{
+<<<<<<< Updated upstream
 		private static string connectionString = "Server=localhost,1433;Database=Northwind;User Id=sa;Password=Password123!;TrustServerCertificate=true;";
+=======
+		private readonly string _connectionString;
+
+		public CategoriesController(IConfiguration configuration)
+		{
+			_connectionString = configuration.GetConnectionString("DefaultConnection");
+		}
+>>>>>>> Stashed changes
 
 		[HttpPost("Insert")]
 		public IActionResult Insert([FromBody] Categories categories)
 		{
 			try
 			{
-				using (SqlConnection connection = new SqlConnection(connectionString))
+				using (SqlConnection connection = new SqlConnection(_connectionString))
 				{
 					connection.Open();
 					string query;
@@ -84,7 +93,7 @@ namespace CRUD.ADO.NET.Controllers
 			try
 			{
 				List<Categories> categoriesList = new List<Categories>();
-				using (SqlConnection connection = new SqlConnection(connectionString))
+				using (SqlConnection connection = new SqlConnection(_connectionString))
 				{
 					connection.Open();
 					string query = @$"
@@ -122,7 +131,7 @@ namespace CRUD.ADO.NET.Controllers
 		{
 			try
 			{
-				using (SqlConnection connection = new SqlConnection(connectionString))
+				using (SqlConnection connection = new SqlConnection(_connectionString))
 				{
 					connection.Open();
 					string query = @$"
@@ -155,7 +164,7 @@ namespace CRUD.ADO.NET.Controllers
 		{
 			try
 			{
-				using (SqlConnection connection = new SqlConnection(connectionString))
+				using (SqlConnection connection = new SqlConnection(_connectionString))
 				{
 					connection.Open();
 					string query = @$"
